@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Study Session Manager</title>
+
+<style>
+body{
+font-family: Arial, sans-serif;
+background:#f4f6f9;
+margin:0;
+}
+
+header{
+background:#1e3a8a;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+.container{
+width:90%;
+max-width:1000px;
+margin:auto;
+margin-top:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+h2{
+color:#1e3a8a;
+margin-top:0;
+}
+
+form{
+display:grid;
+gap:10px;
+}
+
+input, textarea, button{
+padding:10px;
+border-radius:5px;
+border:1px solid #ccc;
+font-size:14px;
+}
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th, td{
+border:1px solid #ddd;
+padding:10px;
+}
+
+th{
+background:#e5e7eb;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>Study Session Manager</h1>
+<p>Milestone 2 UI Prototype</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>Add Student</h2>
+
+<form id="studentForm">
+<input id="firstName" type="text" placeholder="First Name">
+<input id="lastName" type="text" placeholder="Last Name">
+<input id="email" type="email" placeholder="Email">
+<input id="major" type="text" placeholder="Major">
+<input id="yearLevel" type="number" placeholder="Year Level">
+
+<button>Add Student</button>
+</form>
+
+</div>
+
+<div class="card">
+<h2>Create Study Session</h2>
+
+<form id="sessionForm">
+
+<input id="sessionDate" type="date">
+<input id="startTime" type="time">
+<input id="endTime" type="time">
+<input id="location" type="text" placeholder="Location">
+
+<textarea id="notes" placeholder="Session Notes"></textarea>
+
+<button>Create Session</button>
+
+</form>
+
+</div>
+
+<div class="card">
+
+<h2>Current Students</h2>
+
+<table id="studentTable">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>First Name</th>
+<th>Last Name</th>
+<th>Major</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>1</td>
+<td>Sean</td>
+<td>Ramirez</td>
+<td>Computer Science</td>
+</tr>
+
+<tr>
+<td>2</td>
+<td>Maria</td>
+<td>Lopez</td>
+<td>Biology</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+let nextId = 3;
+
+document.getElementById("studentForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+let first = document.getElementById("firstName").value;
+let last = document.getElementById("lastName").value;
+let major = document.getElementById("major").value;
+
+let table = document.getElementById("studentTable").querySelector("tbody");
+
+let row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${nextId}</td>
+<td>${first}</td>
+<td>${last}</td>
+<td>${major}</td>
+`;
+
+table.appendChild(row);
+
+nextId++;
+
+this.reset();
+
+alert("Student added to UI table");
+
+});
+
+document.getElementById("sessionForm").addEventListener("submit", function(e){
+
+e.preventDefault();
+
+alert("Study session created (UI prototype)");
+
+this.reset();
+
+});
+
+</script>
+
+</body>
+</html>
