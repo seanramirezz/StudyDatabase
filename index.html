@@ -1,208 +1,525 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Study Session Manager</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIU Study Session Tracker</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-<style>
-body{
-font-family: Arial, sans-serif;
-background:#f4f6f9;
-margin:0;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
 
-header{
-background:#1e3a8a;
-color:white;
-text-align:center;
-padding:20px;
-}
+    .navbar {
+      background: #0b3d91;
+      color: white;
+      padding: 18px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-.container{
-width:90%;
-max-width:1000px;
-margin:auto;
-margin-top:30px;
-}
+    .navbar h1 {
+      margin: 0;
+      font-size: 28px;
+    }
 
-.card{
-background:white;
-padding:20px;
-margin-bottom:20px;
-border-radius:8px;
-box-shadow:0 2px 6px rgba(0,0,0,0.1);
-}
+    .navbar p {
+      margin: 4px 0 0;
+      font-size: 14px;
+      opacity: 0.9;
+    }
 
-h2{
-color:#1e3a8a;
-margin-top:0;
-}
+    .hero {
+      background: linear-gradient(135deg, #0b3d91, #1d5bbf);
+      color: white;
+      padding: 48px 32px;
+    }
 
-form{
-display:grid;
-gap:10px;
-}
+    .hero h2 {
+      margin: 0 0 12px 0;
+      font-size: 36px;
+    }
 
-input, textarea, button{
-padding:10px;
-border-radius:5px;
-border:1px solid #ccc;
-font-size:14px;
-}
+    .hero p {
+      margin: 0;
+      max-width: 760px;
+      line-height: 1.6;
+      font-size: 17px;
+    }
 
-button{
-background:#2563eb;
-color:white;
-border:none;
-cursor:pointer;
-}
+    .container {
+      width: 92%;
+      max-width: 1350px;
+      margin: 28px auto 40px;
+    }
 
-button:hover{
-background:#1d4ed8;
-}
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
 
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:10px;
-}
+    .stat-card {
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
 
-th, td{
-border:1px solid #ddd;
-padding:10px;
-}
+    .stat-card h3 {
+      margin: 0 0 10px;
+      color: #0b3d91;
+      font-size: 16px;
+    }
 
-th{
-background:#e5e7eb;
-}
-</style>
+    .stat-card .value {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      margin-bottom: 16px;
+      color: #0b3d91;
+      font-size: 28px;
+    }
+
+    .card p.subtitle {
+      margin-top: -4px;
+      margin-bottom: 18px;
+      color: #4b5563;
+      font-size: 14px;
+    }
+
+    form {
+      display: grid;
+      gap: 12px;
+    }
+
+    input, button {
+      font-size: 15px;
+      padding: 12px 14px;
+      border-radius: 8px;
+    }
+
+    input {
+      border: 1px solid #cbd5e1;
+      background: #fff;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #1d5bbf;
+      box-shadow: 0 0 0 3px rgba(29, 91, 191, 0.15);
+    }
+
+    button {
+      border: none;
+      background: #0b3d91;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #082f6b;
+    }
+
+    .message {
+      margin-top: 8px;
+      font-weight: bold;
+      min-height: 20px;
+    }
+
+    .table-card {
+      background: white;
+      border-radius: 14px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      margin-bottom: 24px;
+      overflow-x: auto;
+    }
+
+    .table-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .table-header h2 {
+      margin: 0;
+      color: #0b3d91;
+      font-size: 28px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 900px;
+    }
+
+    th, td {
+      border: 1px solid #dbe3ec;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #e8f0fa;
+      color: #1f2937;
+    }
+
+    tr:nth-child(even) {
+      background: #fafcff;
+    }
+
+    .pill {
+      display: inline-block;
+      background: #dbeafe;
+      color: #0b3d91;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: #6b7280;
+      font-size: 14px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-two {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h2 {
+        font-size: 28px;
+      }
+
+      .navbar {
+        padding: 16px 18px;
+      }
+
+      .hero {
+        padding: 32px 18px;
+      }
+
+      .container {
+        width: 94%;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="navbar">
+    <div>
+      <h1>FIU Study Session Tracker</h1>
+      <p>Student study planning and session management portal</p>
+    </div>
+    <span class="pill">Database Application</span>
+  </div>
 
-<header>
-<h1>Study Session Manager</h1>
-<p>Milestone 2 UI Prototype</p>
-</header>
+  <section class="hero">
+    <h2>Manage study sessions with a live relational database</h2>
+    <p>
+      This application helps FIU students register, create study sessions, organize subject-based
+      meetings, and view session information in real time using a PostgreSQL database with a Node.js backend.
+    </p>
+  </section>
 
-<div class="container">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Total Registered Students</h3>
+        <div class="value" id="totalStudents">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Total Study Sessions</h3>
+        <div class="value" id="totalSessions">0</div>
+      </div>
+      <div class="stat-card">
+        <h3>Subjects in Summary View</h3>
+        <div class="value" id="totalSummaryRows">0</div>
+      </div>
+    </div>
 
-<div class="card">
-<h2>Add Student</h2>
+    <div class="grid-two">
+      <div class="card">
+        <h2>Register Student</h2>
+        <p class="subtitle">Add a student to the system so they can be tracked in study session planning.</p>
+        <form id="studentForm">
+          <input type="text" id="first_name" placeholder="First Name" required />
+          <input type="text" id="last_name" placeholder="Last Name" required />
+          <input type="email" id="email" placeholder="FIU Email" required />
+          <input type="text" id="major" placeholder="Major" />
+          <input type="number" id="year_level" placeholder="Year Level (1-6)" min="1" max="6" required />
+          <button type="submit">Add Student</button>
+        </form>
+        <div class="message" id="studentMessage"></div>
+      </div>
 
-<form id="studentForm">
-<input id="firstName" type="text" placeholder="First Name">
-<input id="lastName" type="text" placeholder="Last Name">
-<input id="email" type="email" placeholder="Email">
-<input id="major" type="text" placeholder="Major">
-<input id="yearLevel" type="number" placeholder="Year Level">
+      <div class="card">
+        <h2>Create Study Session</h2>
+        <p class="subtitle">Schedule a new study session with date, time, location, and notes.</p>
+        <form id="sessionForm">
+          <input type="date" id="session_date" required />
+          <input type="time" id="start_time" required />
+          <input type="time" id="end_time" required />
+          <input type="text" id="location" placeholder="Location" required />
+          <input type="text" id="notes" placeholder="Session Notes" />
+          <button type="submit">Create Session</button>
+        </form>
+        <div class="message" id="sessionMessage"></div>
+      </div>
+    </div>
 
-<button>Add Student</button>
-</form>
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Registered Students</h2>
+        <button onclick="loadStudents()">Refresh Students</button>
+      </div>
+      <table id="studentsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>First</th>
+            <th>Last</th>
+            <th>Email</th>
+            <th>Major</th>
+            <th>Year</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-</div>
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Upcoming Study Sessions</h2>
+        <button onclick="loadSessions()">Refresh Sessions</button>
+      </div>
+      <table id="sessionsTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Duration</th>
+            <th>Location</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-<div class="card">
-<h2>Create Study Session</h2>
+    <div class="table-card">
+      <div class="table-header">
+        <h2>Session Insights</h2>
+        <button onclick="loadSummary()">Refresh Summary</button>
+      </div>
+      <table id="summaryTable">
+        <thead>
+          <tr>
+            <th>Session ID</th>
+            <th>Date</th>
+            <th>Start</th>
+            <th>End</th>
+            <th>Duration</th>
+            <th>Location</th>
+            <th>Subject</th>
+            <th>Level</th>
+            <th>Total Students</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
 
-<form id="sessionForm">
+    <div class="footer-note">
+      FIU Study Session Tracker • Built with HTML, Node.js, Express, PostgreSQL, and a normalized relational schema
+    </div>
+  </div>
 
-<input id="sessionDate" type="date">
-<input id="startTime" type="time">
-<input id="endTime" type="time">
-<input id="location" type="text" placeholder="Location">
+  <script>
+    const API_URL = "http://localhost:3001";
 
-<textarea id="notes" placeholder="Session Notes"></textarea>
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      if (isNaN(date)) return dateString;
+      return date.toISOString().split("T")[0];
+    }
 
-<button>Create Session</button>
+    async function loadStudents() {
+      const res = await fetch(`${API_URL}/students`);
+      const data = await res.json();
 
-</form>
+      const tbody = document.querySelector("#studentsTable tbody");
+      tbody.innerHTML = "";
 
-</div>
+      data.forEach(student => {
+        const row = `
+          <tr>
+            <td>${student.student_id}</td>
+            <td>${student.first_name}</td>
+            <td>${student.last_name}</td>
+            <td>${student.email}</td>
+            <td>${student.major || ""}</td>
+            <td>${student.year_level || ""}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
 
-<div class="card">
+      document.getElementById("totalStudents").textContent = data.length;
+    }
 
-<h2>Current Students</h2>
+    async function loadSessions() {
+      const res = await fetch(`${API_URL}/sessions`);
+      const data = await res.json();
 
-<table id="studentTable">
+      const tbody = document.querySelector("#sessionsTable tbody");
+      tbody.innerHTML = "";
 
-<thead>
-<tr>
-<th>ID</th>
-<th>First Name</th>
-<th>Last Name</th>
-<th>Major</th>
-</tr>
-</thead>
+      data.forEach(session => {
+        const row = `
+          <tr>
+            <td>${session.session_id}</td>
+            <td>${formatDate(session.session_date)}</td>
+            <td>${session.start_time}</td>
+            <td>${session.end_time}</td>
+            <td>${session.duration_minutes}</td>
+            <td>${session.location}</td>
+            <td>${session.notes || ""}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
 
-<tbody>
+      document.getElementById("totalSessions").textContent = data.length;
+    }
 
-<tr>
-<td>1</td>
-<td>Sean</td>
-<td>Ramirez</td>
-<td>Computer Science</td>
-</tr>
+    async function loadSummary() {
+      const res = await fetch(`${API_URL}/summary`);
+      const data = await res.json();
 
-<tr>
-<td>2</td>
-<td>Maria</td>
-<td>Lopez</td>
-<td>Biology</td>
-</tr>
+      const tbody = document.querySelector("#summaryTable tbody");
+      tbody.innerHTML = "";
 
-</tbody>
+      data.forEach(item => {
+        const row = `
+          <tr>
+            <td>${item.session_id}</td>
+            <td>${formatDate(item.session_date)}</td>
+            <td>${item.start_time}</td>
+            <td>${item.end_time}</td>
+            <td>${item.duration_minutes}</td>
+            <td>${item.location}</td>
+            <td>${item.subject_name || ""}</td>
+            <td>${item.subject_level || ""}</td>
+            <td>${item.total_students}</td>
+          </tr>
+        `;
+        tbody.innerHTML += row;
+      });
 
-</table>
+      document.getElementById("totalSummaryRows").textContent = data.length;
+    }
 
-</div>
+    document.getElementById("studentForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-</div>
+      const student = {
+        first_name: document.getElementById("first_name").value,
+        last_name: document.getElementById("last_name").value,
+        email: document.getElementById("email").value,
+        major: document.getElementById("major").value,
+        year_level: parseInt(document.getElementById("year_level").value)
+      };
 
-<script>
+      const res = await fetch(`${API_URL}/students`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(student)
+      });
 
-let nextId = 3;
+      const message = document.getElementById("studentMessage");
 
-document.getElementById("studentForm").addEventListener("submit", function(e){
+      if (res.ok) {
+        message.textContent = "Student registered successfully.";
+        message.style.color = "green";
+        document.getElementById("studentForm").reset();
+        loadStudents();
+      } else {
+        message.textContent = "Failed to add student.";
+        message.style.color = "red";
+      }
+    });
 
-e.preventDefault();
+    document.getElementById("sessionForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-let first = document.getElementById("firstName").value;
-let last = document.getElementById("lastName").value;
-let major = document.getElementById("major").value;
+      const session = {
+        session_date: document.getElementById("session_date").value,
+        start_time: document.getElementById("start_time").value,
+        end_time: document.getElementById("end_time").value,
+        location: document.getElementById("location").value,
+        notes: document.getElementById("notes").value
+      };
 
-let table = document.getElementById("studentTable").querySelector("tbody");
+      const res = await fetch(`${API_URL}/sessions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(session)
+      });
 
-let row = document.createElement("tr");
+      const message = document.getElementById("sessionMessage");
 
-row.innerHTML = `
-<td>${nextId}</td>
-<td>${first}</td>
-<td>${last}</td>
-<td>${major}</td>
-`;
+      if (res.ok) {
+        message.textContent = "Study session created successfully.";
+        message.style.color = "green";
+        document.getElementById("sessionForm").reset();
+        loadSessions();
+        loadSummary();
+      } else {
+        message.textContent = "Failed to create session.";
+        message.style.color = "red";
+      }
+    });
 
-table.appendChild(row);
-
-nextId++;
-
-this.reset();
-
-alert("Student added to UI table");
-
-});
-
-document.getElementById("sessionForm").addEventListener("submit", function(e){
-
-e.preventDefault();
-
-alert("Study session created (UI prototype)");
-
-this.reset();
-
-});
-
-</script>
-
+    loadStudents();
+    loadSessions();
+    loadSummary();
+  </script>
 </body>
 </html>
